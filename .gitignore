@@ -1,0 +1,15 @@
+﻿# Linux & System Artifacts
+*.o
+*.out
+*.log
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
