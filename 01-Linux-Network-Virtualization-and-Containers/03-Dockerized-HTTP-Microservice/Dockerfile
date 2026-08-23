@@ -6,9 +6,9 @@ WORKDIR /HTTPServer
 
 
 
-RUN pip install pip install --no-cache-dir \
-flask==2.0.2 \
-werkzeug==2.0.2
+RUN pip install --no-cache-dir \
+    flask==2.0.2 \
+    werkzeug==2.0.2
 
 
 

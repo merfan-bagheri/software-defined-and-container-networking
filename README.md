@@ -1,5 +1,6 @@
-﻿# 🌐 Software-Defined & Container Networking (SDMN)
+# 🌐 Software-Defined & Container Networking (SDMN)
 
+[![CI](https://github.com/merfan-bagheri/software-defined-and-container-networking/actions/workflows/ci.yml/badge.svg)](https://github.com/merfan-bagheri/software-defined-and-container-networking/actions/workflows/ci.yml)
 [![Linux](https://img.shields.io/badge/Linux-Kernel%20Networking-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Docker](https://img.shields.io/badge/Docker-Containers-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Bash](https://img.shields.io/badge/Bash-Shell%20Scripting-4EAA25?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)

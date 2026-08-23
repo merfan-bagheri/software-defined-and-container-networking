@@ -1,3 +1,4 @@
+#!/bin/bash
 # Create Network Namespaces
 sudo ip netns add ns1
 sudo ip netns add ns2

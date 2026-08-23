@@ -1,0 +1,66 @@
+name: Network Virtualization & Microservice CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  shellcheck:
+    name: Shell Script Static Analysis (ShellCheck)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Run ShellCheck on Network Scripts
+        run: |
+          shellcheck $(find . -name "*.sh")
+
+  docker-microservice:
+    name: Docker HTTP Microservice Build & Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Container
+        run: |
+          cd 01-Linux-Network-Virtualization-and-Containers/03-Dockerized-HTTP-Microservice
+          docker build -t http-microservice:latest .
+
+      - name: Run Microservice Container
+        run: |
+          docker run -d --name test-service -p 8000:8000 http-microservice:latest
+          sleep 3
+
+      - name: Smoke Test API Endpoints
+        run: |
+          echo "Testing GET /api/v1/status..."
+          curl -f http://localhost:8000/api/v1/status
+
+          echo -e "\nTesting POST /api/v1/status..."
+          curl -f -X POST -H "Content-Type: application/json" -d '{"status":"HEALTHY"}' http://localhost:8000/api/v1/status
+
+          echo -e "\nVerifying updated state..."
+          STATUS=$(curl -s http://localhost:8000/api/v1/status | grep "HEALTHY")
+          if [ -z "$STATUS" ]; then
+            echo "API state verification failed!"
+            exit 1
+          fi
+          echo -e "\n✓ Microservice API Verification Succeeded!"
+
+      - name: Stop & Clean Container
+        if: always()
+        run: |
+          docker stop test-service || true
+          docker rm test-service || true
